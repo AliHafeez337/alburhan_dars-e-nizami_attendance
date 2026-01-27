@@ -4,11 +4,12 @@
 
 **System Type:** Google Sheets-based Attendance Tracker  
 **Language Support:** Urdu + English  
-**Working Days:** Monday to Friday only  
-**Groups:** 7 groups with dynamic student counts  
+**Working Days:** ALL days (Mon-Sun, including weekends)  
+**Groups:** 7 groups (Urdu names: اولیٰ, ثانیہ, ثالثہ, رابعہ, خامسہ, سادسه, سابعه)  
 **Automation:** Monthly sheet creation (1st of month, 9:00 AM)  
-**Performance:** Optimized - processes only actual data rows (~90 rows, not 1000)  
-**Charts:** 3 visual charts (Pie, Group Bar, Monthly Trend)
+**Performance:** Optimized - 30-60 seconds  
+**Auto-Features:** 🎨 Cell coloring | ❄️ Row/column freezing  
+**Charts:** 7 multi-bar charts (all 4 attendance types)
 
 ---
 
@@ -16,13 +17,14 @@
 
 1. Create Google Sheet
 2. Add 4 script files via Apps Script
-3. Run: **📊 Attendance System** → **Create Template**
-4. **⚠️ MANUALLY FREEZE**: View → Freeze → 1 column, then View → Freeze → 1 row
-5. Add student names
-6. Run: **Setup Monthly Automation**
-7. Run: **Create New Month** (takes 30-60 seconds)
-8. **⚠️ MANUALLY FREEZE** the monthly sheet too
-9. ✅ Done!
+3. Run: **📊 Attendance System** → **📝 Create Template**
+4. ✅ **Auto-frozen** Row 1 & Column A
+5. Add student names (Column A), contacts (Column B), مربی (Column C)
+6. Run: **⚙️ Setup Automation**
+7. Run: **📅 Create New Month** (30-60 seconds)
+8. ✅ **Auto-frozen** + **Auto-coloring** enabled
+9. Mark attendance → Watch cells change color! 🎨
+10. ✅ Done!
 
 ---
 
@@ -32,12 +34,12 @@
 
 | Command | What It Does | When to Use |
 |---------|-------------|-------------|
-| **📝 Create Template** | Creates TEMPLATE sheet with 7 groups | First time setup only |
+| **📝 Create Template** | Creates TEMPLATE with 7 Urdu groups | First time setup only |
 | **📅 Create New Month** | Creates monthly sheet for current month | Manually create any month |
-| **⚙️ Setup Monthly Automation** | Enables automatic monthly creation | Initial setup (once) |
-| **📊 Create/Update Reports** | Creates/refreshes REPORTS dashboard | View attendance statistics |
-| **🔧 Fix Data Validation** | Fixes dropdown issues | If dropdowns malfunction |
-| **ℹ️ Show System Info** | Displays system status | Check configuration |
+| **⚙️ Setup Automation** | Enables automatic monthly creation | Initial setup (once) |
+| **📊 Create Reports** | Creates/refreshes REPORTS with 7 charts | View attendance statistics |
+| **🔧 Fix Validation** | Fixes dropdown issues | If dropdowns malfunction |
+| **ℹ️ System Info** | Displays system status | Check configuration |
 
 ---
 
@@ -45,68 +47,97 @@
 
 ### 1. TEMPLATE Sheet
 - **Purpose:** Master template with all groups
-- **Content:** Group headers + student names + contact numbers
+- **Columns:**
+  - A: Student Names
+  - B: Contact Numbers
+  - C: مربی (Supervisor/Teacher)
+  - D+: Placeholder
 - **Usage:** Edit to add/remove students
 - **Rule:** Changes affect future monthly sheets only
 
-### 2. Monthly Sheets (e.g., "January 2025")
+### 2. Monthly Sheets (e.g., "January 2026")
 - **Purpose:** Daily attendance tracking
-- **Content:** Dates (Mon-Fri) + Urdu day names + attendance dropdowns
+- **Columns:**
+  - A: Student Names (copied from template)
+  - B+: Date columns (ALL days 1-31)
 - **Usage:** Take attendance daily/weekly
 - **Rule:** One sheet per month
+- **Features:**
+  - 🎨 Auto-coloring (حاضر=Green, غیر حاضر=Red, چھٹی=Yellow, تعطیل=Gray)
+  - ❄️ Auto-frozen Row 1 & Column A
+  - 📅 All days shown (including weekends)
 
 ### 3. REPORTS Sheet
 - **Purpose:** Analytics and visualization
-- **Content:** 3 Charts + Tables
-  - Overall Attendance Pie Chart
-  - Group-wise Bar Chart (all 7 groups)
-  - Monthly Trend Line Chart
+- **Content:** 7 Multi-Bar Charts + Summary Table
+  - Each chart shows 4 colored bars per month
+  - All text in Urdu
 - **Usage:** View attendance trends and patterns
-- **Update:** Run "Create/Update Reports" (clears old data first)
+- **Update:** Run "Create Reports" (clears old data first)
 
 ---
 
-## 🔢 Structure Reference
+## 📢 Structure Reference
 
 ### Template Layout
 
 ```
-Row 1:       [HEADER] Student Names | Contact No | Date Columns →
-Rows 2-3:    [Group1] 2-row merged header
-Rows 4-13:   Student rows (10 default, can be more)
-Rows 14-15:  [Group2] 2-row merged header
+Row 1:       [HEADER] Student Names | Contact No | مربی | Date→
+Rows 2-3:    [اولیٰ] 2-row header (dark green across A-C)
+Rows 4-13:   Student rows (10 default, can add more)
+Rows 14-15:  [ثانیہ] 2-row header
 Rows 16-25:  Student rows
 ... (pattern repeats for 7 groups)
 ```
 
+### Monthly Sheet Layout
+
+```
+Row 1:       [HEADER] Student Names | 01(اتوار) | 02(پیر) | 03(منگل) ...
+Rows 2-3:    [اولیٰ] 2-row header (dark green across ALL columns)
+Rows 4-13:   Student rows with dropdowns + auto-coloring
+Rows 14-15:  [ثانیہ] 2-row header
+... (pattern repeats)
+```
+
 ### Column Structure
 
+**TEMPLATE:**
 - **Column A:** Student Names (FROZEN)
 - **Column B:** Contact Numbers
-- **Column C+:** Date columns with attendance dropdowns
+- **Column C:** مربی
+- **Column D+:** Placeholder
+
+**MONTHLY:**
+- **Column A:** Student Names (FROZEN) - copied from template
+- **Column B+:** Date columns - ALL days with Urdu names
 
 ---
 
 ## 🇺🇷 Urdu Language Reference
 
-### Day Names (Monday to Friday)
+### Day Names (All 7 Days)
 
 | English | Urdu | Used In |
 |---------|------|---------|
+| Sunday | اتوار | Date headers |
 | Monday | پیر | Date headers |
 | Tuesday | منگل | Date headers |
 | Wednesday | بدھ | Date headers |
 | Thursday | جمعرات | Date headers |
-| Friday | جمعہ | Date headers (highlighted green) |
+| Friday | جمعہ | Date headers (light green bg) |
+| Saturday | ہفتہ | Date headers (light gray bg) |
 
-### Attendance Status
+### Attendance Status with Auto-Colors 🎨
 
-| English | Urdu | When to Use |
-|---------|------|-------------|
-| Present | حاضر | Student attended class |
-| Absent | غیر حاضر | Student did not attend |
-| Leave | چھٹی | Student on approved leave |
-| Holiday | تعطیل | School/class holiday |
+| English | Urdu | Cell Color | When to Use |
+|---------|------|------------|-------------|
+| Present | حاضر | 🟢 Light Green | Student attended |
+| Absent | غیر حاضر | 🔴 Light Red | Student didn't attend |
+| Leave | چھٹی | 🟡 Light Yellow | Approved leave |
+| Holiday | تعطیل | ⚫ Light Gray | School holiday |
+
+**Note:** Cells automatically change color when you select from dropdown!
 
 ---
 
@@ -114,9 +145,14 @@ Rows 16-25:  Student rows
 
 **Header Format:** `DD (Urdu Day)`  
 **Examples:**
-- `01 (پیر)` = 1st, Monday
-- `15 (جمعرات)` = 15th, Thursday
-- `28 (جمعہ)` = 28th, Friday
+- `01 (اتوار)` = 1st, Sunday
+- `05 (جمعرات)` = 5th, Thursday
+- `29 (جمعہ)` = 29th, Friday
+
+**Background Colors:**
+- **Friday:** Light green (#d9ead3)
+- **Saturday/Sunday:** Light gray (#f3f3f3)
+- **Other days:** White
 
 ---
 
@@ -135,11 +171,14 @@ Rows 16-25:  Student rows
 ### What Happens Automatically
 
 1. **Date Check:** Script checks if today is 1st of month
-2. **Template Copy:** Copies structure from TEMPLATE
-3. **Date Setup:** Adds Mon-Fri dates with Urdu names
-4. **Dropdowns:** Applies validation to student rows only
-5. **Placement:** Moves new sheet to front
-6. **Naming:** Names sheet "Month Year" format
+2. **Sheet Creation:** Creates blank sheet with month name
+3. **Copy Names:** Copies ONLY Column A from TEMPLATE
+4. **Date Setup:** Adds ALL days of month with Urdu names
+5. **Dropdowns:** Applies strict validation to student rows
+6. **Coloring:** Sets up auto-coloring (onEdit trigger)
+7. **Freezing:** Auto-freezes Row 1 and Column A
+8. **Highlighting:** Weekends gray, Fridays green
+9. **Placement:** Moves new sheet to front
 
 ---
 
@@ -149,26 +188,29 @@ Rows 16-25:  Student rows
 
 1. Open current month sheet
 2. For each student, click cell under date
-3. Select status from dropdown
-4. Data auto-saves
+3. Select from dropdown
+4. **Watch cell automatically change color!** 🎨
+5. Data auto-saves
 
 ### Weekly: Review Data
 
 1. Scan for patterns (absences, etc.)
 2. Check all dates filled
-3. Review Friday column (highlighted)
+3. Notice color-coded cells at a glance
+4. Weekends shown in gray
 
 ### Monthly: Generate Reports
 
-1. Click: **📊 Attendance System** → **Create/Update Reports**
+1. Click: **📊 Attendance System** → **📊 Create Reports**
 2. View REPORTS sheet
-3. Check charts and statistics
+3. Check 7 multi-bar charts (one per group)
+4. Each chart shows 4 colored bars per month
 
 ### As Needed: Add Students
 
 1. Open TEMPLATE sheet
 2. Insert row in appropriate group
-3. Add student name and contact
+3. Add name (A), contact (B), مربی (C)
 4. Save
 5. Future monthly sheets include this student
 
@@ -181,19 +223,23 @@ Rows 16-25:  Student rows
 | Element | Color | Meaning |
 |---------|-------|---------|
 | Header row | Blue (`#4a86e8`) | Column headers |
-| Group headers | Dark green (`#38761d`) | Group identifiers (left-aligned text) |
+| Group headers | Dark green (`#38761d`) | Group identifiers (2 rows) |
 | Friday columns | Light green (`#d9ead3`) | Friday highlighting |
-| Student rows (alternate) | Light gray (`#f9f9f9`) | Readability |
+| Weekend columns | Light gray (`#f3f3f3`) | Saturday/Sunday |
+| حاضر cells | Light green (`#d9ead3`) | Present |
+| غیر حاضر cells | Light red (`#f4cccc`) | Absent |
+| چھٹی cells | Light yellow (`#fff2cc`) | Leave |
+| تعطیل cells | Light gray (`#efefef`) | Holiday |
 
 ### Frozen Elements
 
-- **Column A:** Frozen MANUALLY (View → Freeze → 1 column)
-- **Row 1:** Frozen MANUALLY (View → Freeze → 1 row)
+- **Row 1:** Auto-frozen (header stays visible)
+- **Column A:** Auto-frozen (names stay visible)
 
 ### Group Header Appearance
-- Merged across ALL columns (A to last date column)
-- Text is **left-aligned** so "Group 1" appears in first column
-- Even though merged fully, the name stays on the left
+- **2 rows tall** (merged vertically in Column A)
+- **Dark green** across ALL columns
+- **Text left-aligned** (appears in Column A)
 
 ---
 
@@ -204,12 +250,14 @@ Rows 16-25:  Student rows
 | Issue | Quick Fix |
 |-------|-----------|
 | Menu not showing | Refresh sheet (F5) |
-| Dropdowns broken | Run "Fix Data Validation" |
-| Dropdowns on headers | Run "Fix Data Validation" |
+| Dropdowns broken | Run "Fix Validation" |
+| Cells not auto-coloring | Select from dropdown (don't type) |
+| Dropdowns on headers | Run "Fix Validation" |
 | Can't see Urdu | Check browser/system fonts |
 | Permission error | Re-run "Setup Automation" |
 | Sheet exists error | Normal - can't create twice |
 | Automation not working | Check triggers in Apps Script |
+| Contact/مربی not in monthly | **Correct!** Only Column A copied |
 
 ---
 
@@ -219,6 +267,7 @@ Rows 16-25:  Student rows
 
 ✅ View attendance  
 ✅ Take attendance via dropdowns  
+✅ See auto-colored cells  
 ✅ View reports  
 ✅ Add students  
 
@@ -249,22 +298,26 @@ Rows 16-25:  Student rows
 
 ### Available Metrics
 
-**Overall Summary:**
-- Total present days
-- Total absent days
-- Total leave days
-- Total holidays
-- Average attendance rate
+**Summary Table:**
+- ماہ (Month)
+- گروپ (Group)
+- حاضر (Present)
+- غیر حاضر (Absent)
+- چھٹی (Leave)
+- تعطیل (Holiday)
 
-**Group-Wise:**
-- Per-group attendance breakdown
-- Individual group statistics
-- Comparison across groups
-
-**Monthly Trends:**
-- Month-by-month comparison
-- Attendance percentage trends
-- Pattern identification
+**7 Multi-Bar Charts (One Per Group):**
+- **Title:** گروپ: اولیٰ (etc.)
+- **X-axis:** ماہ (Month names)
+- **Y-axis:** تعداد (Count)
+- **4 Bars per month:**
+  - 🟢 Green = حاضر
+  - 🔴 Red = غیر حاضر
+  - 🟡 Yellow = چھٹی
+  - ⚫ Gray = تعطیل
+- **Layout:** Side-by-side bars
+- **Legend:** At bottom
+- **Size:** 600×350 pixels
 
 ---
 
@@ -293,19 +346,22 @@ Rows 16-25:  Student rows
 ### DO's ✅
 
 - ✅ Update TEMPLATE before creating new monthly sheets
-- ✅ Use dropdowns (don't type manually)
+- ✅ Use dropdowns (don't type manually - will be rejected!)
+- ✅ Enjoy the auto-coloring feature
 - ✅ Take attendance regularly
 - ✅ Update reports monthly
 - ✅ Backup important data
 - ✅ Check automation status quarterly
+- ✅ Use Contact/مربی columns in template for reference
 
 ### DON'Ts ❌
 
 - ❌ Delete TEMPLATE sheet
 - ❌ Rename monthly sheets (breaks reports)
 - ❌ Edit group headers in monthly sheets
-- ❌ Type attendance status manually
+- ❌ Type attendance status manually (use dropdown)
 - ❌ Add students directly to monthly sheets
+- ❌ Expect Contact/مربی columns in monthly sheets (they stay in template)
 
 ---
 
@@ -320,45 +376,52 @@ Rows 16-25:  Student rows
 5. [ ] Execution logs checked? (Apps Script → Executions)
 6. [ ] Trigger status checked? (Apps Script → Triggers)
 7. [ ] System info reviewed? (Menu → Show System Info)
+8. [ ] Auto-coloring working? (Try marking attendance)
 
 ---
 
-## 🔄 Version Information
+## 📄 Version Information
 
-**Current Version:** 2.0  
+**Current Version:** 3.0  
 **Release Date:** January 2026  
 **Status:** ✅ Production Ready & Optimized
 
 **Features:**
-- ✓ 7 groups with dynamic students
-- ✓ Urdu language support
-- ✓ Monday-Friday only
-- ✓ Automatic monthly creation
-- ✓ Performance optimized (processes only actual rows)
-- ✓ 3 visual charts in reports
-- ✓ Smart dropdown placement
-- ✓ Manual freezing (prevents conflicts)
-- ✓ Group headers merge across all columns
+- ✅ 7 groups with Urdu names
+- ✅ Urdu language support
+- ✅ ALL days of month (including weekends)
+- ✅ Automatic monthly creation
+- ✅ **🎨 Auto-coloring cells** (حاضر=Green, غیر حاضر=Red, etc.)
+- ✅ **❄️ Auto-freezing** Row 1 & Column A
+- ✅ Performance optimized (30-60 sec)
+- ✅ 7 multi-bar charts in reports
+- ✅ Smart dropdown placement
+- ✅ Strict validation (dropdown-only)
+- ✅ مربی column in template
+- ✅ Monthly sheets copy only Column A
 
-**What's New in v2.0:**
-- 🚀 10x faster performance (30-60 sec vs 6+ min timeout)
-- 📊 3 charts instead of 1 (Pie, Group Bar, Monthly Trend)
-- 🎨 Dark green group headers (#38761d)
-- 📍 Left-aligned group names
-- 🔄 Reports clear old data before updating
-- ❄️ Manual freezing (prevents merge errors)
+**What's New in v3.0:**
+- 🎨 **Automatic cell coloring** based on attendance
+- 📅 **All days** of month (including weekends)
+- 🏫 **مربی column** added to template
+- 📋 **Only Column A** copied to monthly sheets
+- 📊 **Multi-bar charts** (4 attendance types)
+- 🌐 **All Urdu text** in reports
+- ⚡ **Instant coloring** with onEdit trigger
 
 ---
 
-## 📏 System Limits
+## 📚 System Limits
 
 | Element | Limit | Notes |
 |---------|-------|-------|
-| Groups | 7 | Fixed (can be changed in code) |
+| Groups | 7 | Fixed (Urdu names) |
 | Students per group | Unlimited | Add rows as needed |
 | Monthly sheets | Unlimited | One per month |
-| Date columns | 23 max | Mon-Fri in 31-day month |
+| Date columns | 31 max | All days of month |
+| Days shown | ALL days | Including weekends |
 | Data validation | Student rows only | Not on group headers |
+| Auto-coloring | Instant | onEdit trigger |
 
 ---
 
@@ -370,10 +433,10 @@ Rows 16-25:  Student rows
 📊 Attendance System
   ├─ 📝 Create Template
   ├─ 📅 Create New Month
-  ├─ ⚙️ Setup Monthly Automation
-  ├─ 📊 Create/Update Reports
-  ├─ 🔧 Fix Data Validation
-  └─ ℹ️ Show System Info
+  ├─ ⚙️ Setup Automation
+  ├─ 📊 Create Reports
+  ├─ 🔧 Fix Validation
+  └─ ℹ️ System Info
 ```
 
 ### Keyboard Shortcuts
@@ -381,34 +444,21 @@ Rows 16-25:  Student rows
 - **F5** = Refresh sheet
 - **Ctrl+S** = Save (in Apps Script)
 - **Ctrl+/** = Show keyboard shortcuts
-- **Alt+Shift+K** = Keyboard shortcut list
-
----
-
-## 📚 Document Index
-
-1. **README.md** - Complete system documentation
-2. **IMPLEMENTATION_GUIDE.md** - Step-by-step setup
-3. **QUICK_REFERENCE.md** - This document (quick lookup)
-4. **Template.gs** - Template creation code
-5. **Monthly.gs** - Monthly automation code
-6. **Reports.gs** - Reports generation code
-7. **Menu.gs** - Menu and utilities code
 
 ---
 
 ## 💡 Pro Tips
 
-1. **Always Freeze Manually:** After creating template or monthly sheet
-2. **Highlight Fridays:** Automatic light green background
-3. **Contact Numbers:** Use text format (prefix with apostrophe if needed)
-4. **Multiple Students:** Just add more rows in TEMPLATE
-5. **Archive Old Sheets:** Move to separate spreadsheet after year-end
-6. **Print Reports:** File → Print from REPORTS sheet
-7. **Export Data:** File → Download → Excel/CSV
-8. **Formula-Free:** All dropdowns, no complex formulas needed
-9. **Performance:** Script only processes actual data rows, not entire 1000 rows
-10. **Monthly Creation Time:** 30-60 seconds (optimized!)
+1. **Auto-Coloring:** Just select from dropdown - colors change instantly!
+2. **Weekend View:** Easy to see Saturday/Sunday in gray
+3. **Friday Highlight:** Fridays automatically light green
+4. **Contact Reference:** Use template to look up student contacts
+5. **مربی Tracking:** Template shows which teacher supervises each student
+6. **Multiple Students:** Just add rows in template - no limit
+7. **Archive Old Sheets:** Move to separate spreadsheet after year-end
+8. **Print Reports:** File → Print from REPORTS sheet
+9. **Export Data:** File → Download → Excel/CSV
+10. **Visual Scanning:** Color-coded cells make patterns obvious at a glance
 
 ---
 
@@ -421,28 +471,61 @@ Rows 16-25:  Student rows
 **What Was Optimized:**
 - Student row identification
 - Group header identification  
-- Friday column highlighting
+- Weekend/Friday highlighting
 - Reports data reading
+- Auto-coloring (instant onEdit)
 
 **Expected Timings:**
 - Create Template: ~5 seconds
 - Create Monthly Sheet: ~30-60 seconds
 - Update Reports: ~10-20 seconds
+- Auto-coloring: Instant
 
 ---
 
-**Last Updated:** January 2026  
-**Quick Help:** Menu → Show System Info  
-**Full Docs:** See README.md (v2.0)  
-**Performance:** Optimized for speed ⚡
+## 🎨 Auto-Coloring Feature
+
+### How It Works
+
+1. You select attendance from dropdown
+2. `onEdit` trigger runs automatically
+3. Cell background changes instantly:
+   - حاضر → 🟢 Light green
+   - غیر حاضر → 🔴 Light red
+   - چھٹی → 🟡 Light yellow
+   - تعطیل → ⚫ Light gray
+
+### Benefits
+
+- **Visual clarity** - See patterns at a glance
+- **Instant feedback** - No manual formatting needed
+- **Color-coded reports** - Easy to understand
+- **Professional look** - Clean, organized appearance
+
+### Troubleshooting Auto-Coloring
+
+- ✅ Works on monthly sheets only
+- ✅ Requires dropdown selection (not manual typing)
+- ✅ Runs automatically (no action needed)
+- ✅ If not working, try "Fix Validation"
 
 ---
 
 **📌 IMPORTANT REMINDERS:**
-1. Always freeze Column A and Row 1 manually after creating sheets
-2. Group headers are left-aligned (text appears in first column)
-3. Monthly creation takes 30-60 seconds (this is normal)
-4. Reports show 3 charts: Pie, Group Bar, Monthly Trend
-5. Delete any default "Sheet1" before generating reports
+1. Row 1 and Column A auto-freeze when creating sheets
+2. Group headers are 2 rows tall, dark green across ALL columns
+3. Monthly creation takes 30-60 seconds (normal)
+4. Reports show 7 multi-bar charts (one per group, 4 bars per month)
+5. Contact and مربی columns stay in TEMPLATE only
+6. ALL days shown in monthly sheets (including weekends)
+7. Cells auto-color when you mark attendance 🎨
 
 *Keep this document handy for quick lookups!* 📌
+
+---
+
+**Last Updated:** January 2026  
+**Quick Help:** Menu → System Info  
+**Full Docs:** See README.md (v3.0)  
+**Performance:** Optimized for speed ⚡  
+**Auto-Features:** 🎨 Coloring | ❄️ Freezing | 📊 Charts
