@@ -1,6 +1,5 @@
 /**
- * MENU.GS - CLEAN VERSION FROM SCRATCH
- * Creates custom menu and handles triggers
+ * MENU.GS - COMPLETE FILE WITH ALL MENU OPTIONS INCLUDING COLORING
  */
 
 function onOpen() {
@@ -13,6 +12,8 @@ function onOpen() {
     .addItem('⚙️ Setup Automation', 'setupMonthlyAutomation')
     .addSeparator()
     .addItem('📊 Create Reports', 'createOrUpdateReports')
+    .addSeparator()
+    .addItem('🎨 Customize Day Colors', 'showDayColorDialog')  // Coloring from your ColorCustomizer.gs
     .addSeparator()
     .addItem('🔧 Fix Validation', 'fixDataValidation')
     .addItem('ℹ️ System Info', 'showSystemInfo')
