@@ -49,12 +49,14 @@ function generateWeeklyReports() {
     
     // Calculate weekly attendance
     var weeklyData = calculateWeeklyAttendance(sheet, weeks, studentRows);
+
+    // THE NEXT BOTH STEPS ARE WORKING BUT ENTRING THE CELLS ARE AS DROPDOWNS SO GIVING ERRORS.
     
     // Add weekly summary columns AFTER date columns
-    addWeeklySummaryColumns(sheet, weeks);
+    // addWeeklySummaryColumns(sheet, weeks);
     
     // Fill in the weekly data
-    populateWeeklyData(sheet, weeklyData, weeks, studentRows);
+    // populateWeeklyData(sheet, weeklyData, weeks, studentRows);
     
     // Create WEEKLY CHARTS BELOW STUDENT DATA
     createWeeklyChartsBelowData(sheet, weeklyData, weeks, studentRows);
