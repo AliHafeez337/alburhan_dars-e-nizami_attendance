@@ -40,7 +40,7 @@
 
 ## 📂 STEP 4: Create Script Files
 
-Now you'll create 4 separate script files. Here's how:
+Now you'll create 5 separate script files. Here's how:
 
 ### Creating Each File:
 
@@ -83,10 +83,10 @@ Now you'll create 4 separate script files. Here's how:
 - Copies ONLY Column A (student names)
 - Adds ALL days of month with Urdu names
 - Applies attendance dropdowns (حاضر, غیر حاضر, چھٹی, تعطیل)
-- **Enables automatic cell coloring** (حاضر=Green, etc.)
+- **Enables attendance auto-coloring** (حاضر=Green, etc.)
+- **NO automatic Friday/weekend coloring** - all cells start white
 - Handles automatic monthly creation (on 1st of month)
 - Auto-freezes Row 1 and Column A
-- Highlights weekends (gray) and Fridays (green)
 
 ---
 
@@ -126,14 +126,33 @@ Now you'll create 4 separate script files. Here's how:
 
 ---
 
+### FILE 5: **ColorCustomizer.gs** ← NEW FILE
+
+**Steps:**
+1. Click **+** → **Script**
+2. Name it: `ColorCustomizer.gs`
+3. Copy ALL the code from ColorCustomizer.gs
+4. Paste it
+5. **Save**
+
+**What this file does:**
+- Adds "🎨 Customize Day Colors" to menu
+- Provides dialog to select which days to color
+- Colors entire day columns instantly
+- Saves color preferences
+- **Note:** No automatic Friday/weekend coloring
+
+---
+
 ## 💾 STEP 5: Final Save & Close
 
-1. Make sure ALL 4 files are saved
+1. Make sure ALL 5 files are saved
 2. Check that you have these files in the left sidebar:
    - ✅ Template.gs
    - ✅ Monthly.gs
    - ✅ Reports.gs
    - ✅ Menu.gs
+   - ✅ ColorCustomizer.gs
 3. **Close** the Apps Script tab
 4. Return to your Google Sheet
 
@@ -148,7 +167,7 @@ Now you'll create 4 separate script files. Here's how:
 **If you DON'T see the menu:**
 - Wait 10-15 seconds and refresh again
 - Close and reopen the sheet
-- Check that all 4 script files were saved properly
+- Check that all 5 script files were saved properly
 
 ---
 
@@ -185,33 +204,28 @@ Now you'll create 4 separate script files. Here's how:
 **For each group, replace the placeholder names:**
 
 **Example - اولیٰ group (rows 4-13):**
-```
 Row 4: Ahmad Ali
 Row 5: Fatima Hassan
 Row 6: Usman Ahmed
 Row 7: Ayesha Khan
 ... (add up to 10 or more students)
-```
+
 
 ### Add Contact Numbers:
 
 **In Column B:**
-```
 Row 4: 0300-1234567
 Row 5: 0321-7654321
 Row 6: 0333-9876543
 ...
-```
 
 ### Add مربی (Supervisor/Teacher):
 
 **In Column C:**
-```
 Row 4: Ustadh Mahmood
 Row 5: Ustadh Mahmood
 Row 6: Ustadha Aisha
 ...
-```
 
 ### Adding More Students:
 
@@ -260,11 +274,16 @@ Row 6: Ustadha Aisha
 - **Date columns** starting from Column B
 - **ALL days of the month** (1-31, including weekends)
 - Format: "01 (اتوار)", "02 (پیر)", "03 (منگل)", etc.
-- **Weekends** (Sat/Sun) with light gray background
-- **Fridays** with light green background
+- **NO automatic Friday/weekend coloring** - all cells are white
 - **Dropdown menus** on student rows (حاضر, غیر حاضر, چھٹی, تعطیل)
 - **Group headers** (2 rows, dark green across ALL columns)
 - **Row 1 and Column A AUTO-FROZEN** ✅
+
+**IMPORTANT CHANGE from v3.0:**
+- ❌ **NO automatic light green for Fridays**
+- ❌ **NO automatic light gray for weekends**
+- ✅ **ALL cells start white** for custom coloring
+- ✅ **Use "Customize Day Colors" menu** to highlight specific days
 
 ---
 
@@ -289,9 +308,8 @@ Row 6: Ustadha Aisha
 1. **Group headers:** Dark green across ALL columns (2 rows)
 2. **No dropdowns on headers:** Headers should be empty
 3. **Auto-frozen:** Try scrolling - Row 1 and Column A stay visible
-4. **Weekends:** Saturday/Sunday in light gray
-5. **Fridays:** Light green background
-6. **ALL days:** Check that all 31 days are shown
+4. **ALL days:** Check that all 31 days are shown
+5. **No Friday/weekend coloring:** All cells should be white initially
 
 ### Test Strict Validation:
 
@@ -303,7 +321,41 @@ Row 6: Ustadha Aisha
 
 ---
 
-## 📊 STEP 12: Create Reports Dashboard
+## 🎨 STEP 12: Test Custom Day Coloring
+
+### Color Specific Days:
+
+1. Click **📊 Attendance System** → **🎨 Customize Day Colors**
+2. A dialog will appear with:
+   - Checkboxes for all 7 days (Sunday to Saturday)
+   - Color picker
+3. **Select which days to color** (e.g., Monday, Wednesday, Friday)
+4. **Choose a color** (e.g., light blue #e6f3ff)
+5. Click **Apply Colors**
+6. Watch as entire columns are colored instantly! ⚡
+
+**What happens:**
+- Selected day columns get your chosen color
+- **Only empty cells** are colored
+- Cells with attendance keep their attendance colors
+- Process completes in < 2 seconds
+
+**Example use cases:**
+- Color Mondays & Wednesdays for regular classes
+- Color Fridays for special sessions
+- Color weekends for review days
+- Use different colors for different subjects
+
+### Verify Custom Coloring:
+
+1. Check that selected day columns are colored
+2. Check that unselected days remain white
+3. Mark attendance on colored days - cell should get attendance color
+4. Try different color combinations
+
+---
+
+## 📊 STEP 13: Create Reports Dashboard
 
 1. After marking some attendance (at least a few cells)
 2. Click **📊 Attendance System**
@@ -343,10 +395,18 @@ Congratulations! Your attendance system is now fully deployed.
 4. **Watch cell automatically change color!** 🎨
 5. Data saves automatically
 
+### Custom Day Coloring:
+
+1. Use **🎨 Customize Day Colors** anytime
+2. Select which days to highlight
+3. Choose colors for visual grouping
+4. Apply instantly
+
 ### Monthly:
 
 - On the 1st of each month, a new sheet is created automatically
 - You can also create manually anytime
+- **New sheets have white cells** - ready for custom coloring
 
 ### Reporting:
 
@@ -363,7 +423,7 @@ Congratulations! Your attendance system is now fully deployed.
 **Solution:**
 1. Refresh the sheet (F5)
 2. Close and reopen the sheet
-3. Check all 4 script files are saved
+3. Check all 5 script files are saved
 4. Try: Extensions → Apps Script → Run → onOpen
 
 ---
@@ -375,6 +435,17 @@ Congratulations! Your attendance system is now fully deployed.
 2. Check if you're on a monthly sheet (not TEMPLATE or REPORTS)
 3. Try selecting from dropdown again
 4. Run: **📊 Attendance System** → **🔧 Fix Validation**
+
+---
+
+### Issue: Custom colors not applying
+
+**Solution:**
+1. Make sure you're on a monthly sheet
+2. Use **🎨 Customize Day Colors** menu
+3. Select at least one day
+4. Choose a color and click Apply
+5. Wait for success message
 
 ---
 
@@ -433,6 +504,12 @@ Congratulations! Your attendance system is now fully deployed.
 
 ---
 
+### Issue: Friday/weekend not colored
+
+**This is correct!** v3.1 removes automatic Friday/weekend coloring. Use **🎨 Customize Day Colors** menu to color any days you want.
+
+---
+
 ## 📱 Checking Automation Status
 
 ### View Triggers:
@@ -469,18 +546,25 @@ Congratulations! Your attendance system is now fully deployed.
 - Use dropdowns consistently (don't type manually)
 - Enjoy the automatic cell coloring
 - Take attendance regularly (daily or weekly)
-- Weekends and Fridays are auto-highlighted
+- Use custom day colors for visual grouping
 
-### 3. Understanding Structure
+### 3. Day Coloring Strategy
+- **Color by class type:** Different colors for different subjects
+- **Color by importance:** Highlight exam days or special sessions
+- **Color by schedule:** Match your weekly timetable
+- **Save preferences:** System remembers your color choices
+
+### 4. Understanding Structure
 - **TEMPLATE:** 3 columns (Names, Contact, مربی)
 - **MONTHLY:** Only Names column + date columns
 - Contact/مربی stay in template for reference
+- **NO automatic Friday/weekend coloring** in v3.1
 
-### 4. Backups
+### 5. Backups
 - Google Sheets auto-saves
 - For extra safety: File → Make a copy (monthly backup)
 
-### 5. Reports
+### 6. Reports
 - Update reports monthly for trends
 - Use multi-bar charts for presentations
 - Export reports: File → Download
@@ -509,11 +593,13 @@ To check system status anytime:
 - Enjoy automatic cell coloring
 
 ### Weekly:
-- Review attendance patterns (easy with color coding)
+- Review attendance patterns
 - Check for missing entries
+- Update custom day colors if needed
 
 ### Monthly:
 - Check that new sheet was created automatically
+- Apply custom day colors to new sheet
 - Review reports for trends
 - Update reports if needed
 - Archive old sheets if needed
@@ -522,6 +608,7 @@ To check system status anytime:
 - Update student lists in TEMPLATE
 - Add/remove students as needed
 - Review automation trigger status
+- Update color preferences
 
 ### Yearly:
 - Create annual backup
@@ -541,6 +628,7 @@ To check system status anytime:
 ### Common Commands:
 - **Fix issues**: Run "Fix Validation"
 - **Update data**: Run "Create Reports"
+- **Color days**: Run "Customize Day Colors"
 - **System check**: Run "System Info"
 
 ---
@@ -551,11 +639,12 @@ Use this to ensure everything is set up correctly:
 
 - [ ] Google Sheet created
 - [ ] Apps Script editor opened
-- [ ] 4 script files created and saved:
+- [ ] 5 script files created and saved:
   - [ ] Template.gs
   - [ ] Monthly.gs
   - [ ] Reports.gs
   - [ ] Menu.gs
+  - [ ] ColorCustomizer.gs
 - [ ] Sheet refreshed, menu visible
 - [ ] TEMPLATE sheet created
 - [ ] Row 1 and Column A auto-frozen in template
@@ -568,13 +657,13 @@ Use this to ensure everything is set up correctly:
 - [ ] Row 1 and Column A auto-frozen in monthly sheet
 - [ ] Only Column A copied (verified Contact/مربی not present)
 - [ ] ALL days of month visible (including weekends)
+- [ ] **NO automatic Friday/weekend coloring** (all cells white)
 - [ ] Attendance dropdowns tested
 - [ ] **Auto-coloring tested** (حاضر→Green, غیر حاضر→Red, etc.)
 - [ ] Strict validation tested (manual typing rejected)
 - [ ] Group headers verified (2 rows, dark green across all columns)
-- [ ] Weekends verified (Saturday/Sunday in gray)
-- [ ] Fridays verified (light green)
 - [ ] Some attendance marked with auto-colors
+- [ ] **Custom day colors tested** (menu working)
 - [ ] REPORTS sheet created
 - [ ] 7 multi-bar charts visible (4 bars per month per group)
 - [ ] All Urdu text in reports verified
@@ -587,14 +676,15 @@ Use this to ensure everything is set up correctly:
 **For future reference:**
 
 1. **Create sheet** → Open Apps Script
-2. **Add 4 files** → Save all
+2. **Add 5 files** → Save all
 3. **Refresh** → See menu
 4. **Create Template** → Add students (3 columns)
 5. **Setup Automation** → Grant permissions
 6. **Create Month** → Test dropdowns + auto-coloring
-7. **Mark attendance** → Watch cells change color! 🎨
-8. **Create Reports** → View 7 multi-bar charts
-9. **Done!** → Use daily
+7. **Customize Day Colors** → Select days + choose color
+8. **Mark attendance** → Watch cells change color! 🎨
+9. **Create Reports** → View 7 multi-bar charts
+10. **Done!** → Use daily
 
 ---
 
@@ -602,93 +692,102 @@ Use this to ensure everything is set up correctly:
 
 ### What Makes This System Special:
 
-1. **🎨 Automatic Cell Coloring**
+1. **🎨 Attendance Auto-Coloring**
    - حاضر → 🟢 Green
    - غیر حاضر → 🔴 Red
    - چھٹی → 🟡 Yellow
    - تعطیل → ⚫ Gray
    - **Instant feedback** - No manual formatting!
 
-2. **❄️ Auto-Freezing**
+2. **🎨 Custom Day Coloring (NEW!)**
+   - Choose which days to color (checkboxes)
+   - Choose any color (color picker)
+   - Colors entire columns instantly
+   - **Flexible highlighting** for your schedule
+
+3. **❄️ Auto-Freezing**
    - Row 1 stays visible when scrolling down
    - Column A stays visible when scrolling right
    - No manual freezing required
 
-3. **📅 All Days Shown**
+4. **📅 All Days Shown**
    - Complete month view (31 days)
-   - Weekends included (gray background)
-   - Fridays highlighted (green background)
+   - Weekends included
+   - **No automatic coloring** - clean white start
 
-4. **📊 Multi-Bar Charts**
+5. **📊 Multi-Bar Charts**
    - 7 separate charts (one per group)
    - 4 colored bars per month
    - All text in Urdu
    - Professional appearance
 
-5. **🔒 Strict Validation**
+6. **🔒 Strict Validation**
    - Dropdown-only entry
    - Manual typing rejected
    - Data consistency guaranteed
 
-6. **⚡ Performance**
+7. **⚡ Performance**
    - 30-60 seconds to create monthly sheet
    - Processes only actual data
    - Fast and efficient
 
 ---
 
-**System Version:** 3.0  
+**System Version:** 3.1  
 **Last Updated:** January 2026  
 **Status:** Production Ready ✅  
-**Key Features:** 🎨 Auto-coloring | ❄️ Auto-freezing | 📅 All days | 📊 Multi-bar charts
+**Key Features:** 🎨 Attendance Coloring | 🎨 Custom Day Coloring | ❄️ Auto-freezing | 📅 All days | 📊 Multi-bar charts
 
 ---
 
-*You're now ready to manage student attendance efficiently with Urdu language support, automatic cell coloring, all days of the month, and beautiful visual reports!* 🎉
+*You're now ready to manage student attendance efficiently with Urdu language support, automatic cell coloring, customizable day highlighting, all days of the month, and beautiful visual reports!* 🎉
 
 ---
 
 ## 🔍 Quick Reference Card
 
 **Print this for easy access:**
-
-```
 ┌─────────────────────────────────────────────────────┐
-│  STUDENT ATTENDANCE SYSTEM - QUICK REFERENCE       │
+│ STUDENT ATTENDANCE SYSTEM - QUICK REFERENCE │
 ├─────────────────────────────────────────────────────┤
-│                                                     │
-│  📊 CREATE TEMPLATE                                 │
-│     Menu → Create Template                          │
-│     ✓ Auto-frozen Row 1 & Column A                  │
-│     ✓ 3 columns: Names, Contact, مربی               │
-│                                                     │
-│  📅 CREATE MONTHLY SHEET                            │
-│     Menu → Create New Month                         │
-│     ⏱️ Takes 30-60 seconds                           │
-│     ✓ Only Column A copied                          │
-│     ✓ All days shown (including weekends)           │
-│     ✓ Auto-coloring enabled                         │
-│                                                     │
-│  🎨 ATTENDANCE COLORS                               │
-│     حاضر → 🟢 Green                                  │
-│     غیر حاضر → 🔴 Red                               │
-│     چھٹی → 🟡 Yellow                                │
-│     تعطیل → ⚫ Gray                                  │
-│                                                     │
-│  📊 REPORTS                                         │
-│     Menu → Create Reports                           │
-│     ✓ 7 multi-bar charts                            │
-│     ✓ All text in Urdu                              │
-│                                                     │
-│  ⚙️ AUTOMATION                                      │
-│     Runs: 1st of month at 9:00 AM                   │
-│     Check: Apps Script → Triggers                   │
-│                                                     │
-│  🔧 FIX ISSUES                                      │
-│     Menu → Fix Validation                           │
-│     Fixes dropdowns + auto-coloring                 │
-│                                                     │
+│ │
+│ 📊 CREATE TEMPLATE │
+│ Menu → Create Template │
+│ ✓ Auto-frozen Row 1 & Column A │
+│ ✓ 3 columns: Names, Contact, مربی │
+│ │
+│ 📅 CREATE MONTHLY SHEET │
+│ Menu → Create New Month │
+│ ⏱️ Takes 30-60 seconds │
+│ ✓ Only Column A copied │
+│ ✓ All days shown (including weekends) │
+│ ✓ All cells white - no auto coloring │
+│ │
+│ 🎨 CUSTOM DAY COLORS (NEW!) │
+│ Menu → Customize Day Colors │
+│ ✓ Select days (checkboxes) │
+│ ✓ Choose any color │
+│ ✓ Colors entire columns instantly │
+│ │
+│ 🎨 ATTENDANCE COLORS │
+│ حاضر → 🟢 Green │
+│ غیر حاضر → 🔴 Red │
+│ چھٹی → 🟡 Yellow │
+│ تعطیل → ⚫ Gray │
+│ │
+│ 📊 REPORTS │
+│ Menu → Create Reports │
+│ ✓ 7 multi-bar charts │
+│ ✓ All text in Urdu │
+│ │
+│ ⚙️ AUTOMATION │
+│ Runs: 1st of month at 9:00 AM │
+│ Check: Apps Script → Triggers │
+│ │
+│ 🔧 FIX ISSUES │
+│ Menu → Fix Validation │
+│ Fixes dropdowns + auto-coloring │
+│ │
 └─────────────────────────────────────────────────────┘
-```
 
 *Save this guide for future reference!* 📚

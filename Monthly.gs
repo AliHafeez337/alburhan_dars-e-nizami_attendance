@@ -1,7 +1,8 @@
 /**
- * MONTHLY.GS - CLEAN VERSION FROM SCRATCH
- * Creates monthly sheets with Mon-Fri dates and Urdu names
- * AUTO-COLORS cells based on attendance value
+ * MONTHLY.GS - CLEAN VERSION WITHOUT FRIDAY/WEEKEND COLORING
+ * Creates monthly sheets with ALL days
+ * AUTO-COLORS cells based on attendance value ONLY
+ * No automatic Friday/weekend coloring
  */
 
 function onEdit(e) {
@@ -110,7 +111,6 @@ function createMonthlySheet() {
       SpreadsheetApp.getUi().alert('Monthly sheet "' + sheetName + '" created!\n\n' +
                                     '✓ All days of month added\n' +
                                     '✓ Urdu day names\n' +
-                                    '✓ Weekends included\n' +
                                     '✓ Only student names copied\n' +
                                     '✓ Cells will auto-color:\n' +
                                     '  • حاضر = Green\n' +
@@ -162,9 +162,8 @@ function setupMonthlySheet(sheet, date) {
   applyDropdowns(sheet);
   Logger.log('✓ Applied dropdowns');
   
-  // Step 4: Highlight Fridays
-  highlightFridays(sheet, dateColumns);
-  Logger.log('✓ Highlighted Fridays');
+  // Step 4: NO FRIDAY/WEEKEND HIGHLIGHTING - REMOVED
+  // (This step has been removed - no automatic coloring of Fridays/weekends)
   
   // Step 5: Freeze Row 1 and Column A
   sheet.setFrozenRows(1);
@@ -200,9 +199,8 @@ function addDateColumns(sheet, date) {
     allDays.push({
       date: day,
       dayOfWeek: dayOfWeek,
-      urduDay: urduDays[dayOfWeek],
-      isFriday: dayOfWeek === 5,
-      isWeekend: dayOfWeek === 0 || dayOfWeek === 6  // Sunday or Saturday
+      urduDay: urduDays[dayOfWeek]
+      // Removed: isFriday, isWeekend properties since we're not highlighting them
     });
   }
   
@@ -226,10 +224,9 @@ function addDateColumns(sheet, date) {
     
     sheet.setColumnWidth(col, 80);
     
+    // Just store column info without Friday/weekend flags
     dateColumnInfo.push({
-      col: col,
-      isFriday: day.isFriday,
-      isWeekend: day.isWeekend
+      col: col
     });
   }
   
@@ -300,36 +297,14 @@ function applyDropdowns(sheet) {
     var row = studentRows[i];
     sheet.getRange(row, startCol, 1, lastCol - startCol + 1)
       .setDataValidation(rule)
-      .setBackground('#ffffff');
+      .setBackground('#ffffff');  // Set all cells to white initially
   }
   
   Logger.log('✓ Applied STRICT dropdowns to ' + studentRows.length + ' student rows');
   Logger.log('  Note: Cells will auto-color when attendance is marked');
 }
 
-function highlightFridays(sheet, dateColumnInfo) {
-  if (!dateColumnInfo || dateColumnInfo.length === 0) {
-    return;
-  }
-  
-  var lastRow = sheet.getLastRow();
-  
-  for (var i = 0; i < dateColumnInfo.length; i++) {
-    var col = dateColumnInfo[i].col;
-    
-    // Highlight Fridays in light green
-    if (dateColumnInfo[i].isFriday) {
-      sheet.getRange(2, col, lastRow - 1, 1).setBackground('#d9ead3');
-    }
-    
-    // Highlight weekends (Saturday/Sunday) in light gray
-    if (dateColumnInfo[i].isWeekend) {
-      sheet.getRange(2, col, lastRow - 1, 1).setBackground('#f3f3f3');
-    }
-  }
-  
-  Logger.log('✓ Highlighted Fridays (green) and weekends (gray)');
-}
+// REMOVED: highlightFridays() function - no longer needed
 
 function identifyStudentRows(sheet) {
   var lastRow = sheet.getLastRow();

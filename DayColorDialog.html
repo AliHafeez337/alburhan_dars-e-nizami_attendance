@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      /* Add this to your existing styles */
+      .method-selector {
+        margin: 15px 0;
+        padding: 15px;
+        background: white;
+        border-radius: 6px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .method-option {
+        margin: 10px 0;
+        padding: 10px;
+        border: 2px solid #e0e0e0;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .method-option:hover {
+        border-color: #4CAF50;
+        background: #f9f9f9;
+      }
+      .method-option.selected {
+        border-color: #4CAF50;
+        background: #e8f5e8;
+      }
+      .method-option input {
+        margin-right: 10px;
+      }
+      .method-desc {
+        font-size: 12px;
+        color: #666;
+        margin-top: 5px;
+        margin-left: 26px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>🎨 Customize Day Colors</h2>
+      
+      <p style="text-align: center; margin-bottom: 15px; color: #666; font-size: 13px;">
+        Select days to color. Entire columns will be colored instantly!
+      </p>
+      
+      <div id="daysContainer"></div>
+      
+      <div class="color-picker">
+        <label for="colorPicker">Choose Color:</label>
+        <input type="color" id="colorPicker" value="#d9ead3">
+        <div class="info">This color will be applied to entire columns of selected days</div>
+      </div>
+      
+      <div class="method-selector" id="methodSelector" style="display: none;">
+        <div class="method-option selected" onclick="selectMethod('simple')" id="simpleOption">
+          <input type="radio" id="methodSimple" name="method" value="simple" checked>
+          <label for="methodSimple" style="cursor: pointer;">
+            <strong>⚡ Simple Method</strong> (Recommended)
+          </label>
+          <div class="method-desc">
+            Colors entire columns from row 2 to bottom. Fastest method.
+          </div>
+        </div>
+        
+        <div class="method-option" onclick="selectMethod('smart')" id="smartOption">
+          <input type="radio" id="methodSmart" name="method" value="smart">
+          <label for="methodSmart" style="cursor: pointer;">
+            <strong>🎯 Smart Method</strong>
+          </label>
+          <div class="method-desc">
+            Colors only student rows (skips group headers).
+          </div>
+        </div>
+      </div>
+      
+      <div class="loading" id="loading"></div>
+      <div class="result-message" id="resultMessage"></div>
+      
+      <div class="button-container">
+        <button id="applyBtn">Apply Colors</button>
+        <button id="cancelBtn">Cancel</button>
+      </div>
+    </div>
+    
+    <script>
+      // Available days with their Urdu names
+      const days = [
+        { en: 'Sunday', ur: 'اتوار' },
+        { en: 'Monday', ur: 'پیر' },
+        { en: 'Tuesday', ur: 'منگل' },
+        { en: 'Wednesday', ur: 'بدھ' },
+        { en: 'Thursday', ur: 'جمعرات' },
+        { en: 'Friday', ur: 'جمعہ' },
+        { en: 'Saturday', ur: 'هفته' }
+      ];
+      
+      let currentMethod = 'simple';
+      
+      // Initialize the day checkboxes
+      function initializeDays() {
+        const container = document.getElementById('daysContainer');
+        container.innerHTML = '';
+        
+        days.forEach(day => {
+          const div = document.createElement('div');
+          div.className = 'day-checkbox';
+          
+          div.innerHTML = `
+            <input type="checkbox" id="${day.en}" name="day" value="${day.en}">
+            <label for="${day.en}">
+              <span class="current-color" style="background-color: #ffffff"></span>
+              ${day.en}
+              <span class="day-urdu">(${day.ur})</span>
+            </label>
+          `;
+          
+          container.appendChild(div);
+        });
+        
+        // Load saved preferences
+        loadSavedPreferences();
+      }
+      
+      function selectMethod(method) {
+        currentMethod = method;
+        document.getElementById('simpleOption').classList.toggle('selected', method === 'simple');
+        document.getElementById('smartOption').classList.toggle('selected', method === 'smart');
+        document.getElementById('methodSimple').checked = method === 'simple';
+        document.getElementById('methodSmart').checked = method === 'smart';
+      }
+      
+      function loadSavedPreferences() {
+        google.script.run
+          .withSuccessHandler(handlePreferencesLoaded)
+          .withFailureHandler(() => {})
+          .getSavedColorPreference();
+      }
+      
+      function handlePreferencesLoaded(prefs) {
+        if (prefs && prefs.days) {
+          // Check the checkboxes for saved days
+          prefs.days.forEach(day => {
+            const checkbox = document.getElementById(day);
+            if (checkbox) {
+              checkbox.checked = true;
+            }
+          });
+          
+          // Set the color picker
+          if (prefs.color) {
+            document.getElementById('colorPicker').value = prefs.color;
+          }
+        }
+      }
+      
+      // Apply button click handler
+      document.getElementById('applyBtn').addEventListener('click', applyColors);
+      
+      function applyColors() {
+        const selectedDays = [];
+        const checkboxes = document.querySelectorAll('input[name="day"]:checked');
+        
+        checkboxes.forEach(checkbox => {
+          selectedDays.push(checkbox.value);
+        });
+        
+        const color = document.getElementById('colorPicker').value;
+        
+        if (selectedDays.length === 0) {
+          showError('Please select at least one day to color.');
+          return;
+        }
+        
+        showLoading(`Applying colors to ${selectedDays.length} days...`);
+        document.getElementById('applyBtn').disabled = true;
+        
+        // Choose which function to call based on method
+        const functionName = currentMethod === 'simple' ? 'applyDayColorsSimple' : 'applyDayColors';
+        
+        google.script.run
+          .withSuccessHandler(handleApplySuccess)
+          .withFailureHandler(handleApplyError)
+          [functionName](selectedDays, color);
+      }
+      
+      function handleApplySuccess(response) {
+        hideLoading();
+        document.getElementById('applyBtn').disabled = false;
+        
+        if (response.success) {
+          showSuccess(response.message);
+          
+          // Auto-close after 3 seconds
+          setTimeout(() => {
+            google.script.host.close();
+          }, 3000);
+        } else {
+          showError(response.message);
+        }
+      }
+      
+      function handleApplyError(error) {
+        hideLoading();
+        document.getElementById('applyBtn').disabled = false;
+        showError('Error: ' + error.toString());
+        console.error('Error:', error);
+      }
+      
+      // Cancel button
+      document.getElementById('cancelBtn').addEventListener('click', () => {
+        google.script.host.close();
+      });
+      
+      // Utility functions
+      function showLoading(message) {
+        const loading = document.getElementById('loading');
+        if (message) loading.textContent = message;
+        loading.style.display = 'block';
+        hideResult();
+      }
+      
+      function hideLoading() {
+        document.getElementById('loading').style.display = 'none';
+      }
+      
+      function showSuccess(message) {
+        const result = document.getElementById('resultMessage');
+        result.textContent = message;
+        result.className = 'result-message success';
+        result.style.display = 'block';
+      }
+      
+      function showError(message) {
+        const result = document.getElementById('resultMessage');
+        result.textContent = message;
+        result.className = 'result-message error';
+        result.style.display = 'block';
+      }
+      
+      function hideResult() {
+        document.getElementById('resultMessage').style.display = 'none';
+      }
+      
+      // Initialize on page load
+      window.onload = function() {
+        initializeDays();
+        selectMethod('simple'); // Default to simple method
+      };
+    </script>
+  </body>
+</html>
