@@ -1,5 +1,5 @@
 /**
- * MENU.GS - COMPLETE FILE WITH ALL MENU OPTIONS INCLUDING COLORING
+ * MENU.GS - COMPLETE FILE WITH COLORING & ADVANCED REPORTS
  */
 
 function onOpen() {
@@ -12,8 +12,10 @@ function onOpen() {
     .addItem('⚙️ Setup Automation', 'setupMonthlyAutomation')
     .addSeparator()
     .addItem('📊 Create Reports', 'createOrUpdateReports')
+    .addItem('📅 Weekly Reports', 'generateWeeklyReports')          // NEW: Weekly Reports
+    .addItem('📈 Monthly Report', 'generateMonthlyReport')  // NEW: Monthly Comparison
     .addSeparator()
-    .addItem('🎨 Customize Day Colors', 'showDayColorDialog')  // Coloring from your ColorCustomizer.gs
+    .addItem('🎨 Customize Day Colors', 'showDayColorDialog')       // Your coloring feature
     .addSeparator()
     .addItem('🔧 Fix Validation', 'fixDataValidation')
     .addItem('ℹ️ System Info', 'showSystemInfo')
